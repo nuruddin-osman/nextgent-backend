@@ -7,6 +7,7 @@ const path = require("path");
 const bannerRoute = require("./routes/banner.route");
 const projectRoute = require("./routes/projects.route");
 const uploadsRouter = require("./routes/uploads.route");
+const testimonialRoute = require("./routes/testimonials.route");
 
 // Middleware
 app.use(cors());
@@ -22,6 +23,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api", uploadsRouter);
 app.use("/api/banner", bannerRoute);
 app.use("/api/project", projectRoute);
+app.use("/api/testimonial", testimonialRoute);
 
 // Not Found Handler
 app.use((req, res, next) => {
