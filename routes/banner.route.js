@@ -69,4 +69,82 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Update data
+router.put("/:id", async (req, res) => {
+  try {
+    const banner = await Banner.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    if (!banner) {
+      return res.status(404).json({
+        success: false,
+        message: "item is not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: banner,
+    });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      const messages = Object.values(error.errors).map((val) => val.message);
+      return res.status(400).json({
+        success: false,
+        message: messages.join(", "),
+      });
+    }
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+});
+
+//get all data
+router.get("/", async (req, res) => {
+  try {
+    const banner = await Banner.find().sort({ createdAt: -1 });
+
+    if (!banner) {
+      return res.status(404).json({
+        success: false,
+        message: "item is not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: banner,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+});
+//delete data
+router.delete("/:id", async (req, res) => {
+  try {
+    const banner = await Banner.findByIdAndDelete(req.params.id);
+    if (!banner) {
+      return res.status(404).json({
+        success: false,
+        message: "Item not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Item delete is successfull",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+});
+
 module.exports = router;
