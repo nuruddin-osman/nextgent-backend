@@ -5,6 +5,8 @@ require("./config/database");
 const cors = require("cors");
 const path = require("path");
 const bannerRoute = require("./routes/banner.route");
+const projectRoute = require("./routes/projects.route");
+const uploadsRouter = require("./routes/uploads.route");
 
 // Middleware
 app.use(cors());
@@ -17,7 +19,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/api", uploadsRouter);
 app.use("/api/banner", bannerRoute);
+app.use("/api/project", projectRoute);
 
 // Not Found Handler
 app.use((req, res, next) => {
